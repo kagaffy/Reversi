@@ -48,6 +48,13 @@ class GameViewModel: GameViewModelProtocol {
             }
             .store(in: &disposables)
         
+        gameModel.puttableCoordinatesPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [boardViewModel] coordinates in
+                boardViewModel.highlight(coordinates)
+            }
+            .store(in: &disposables)
+        
         gameModel.diskMovePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] put, flip in

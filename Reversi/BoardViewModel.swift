@@ -12,6 +12,7 @@ protocol BoardViewModelProtocol {
     var tappedDiskPublisher: PassthroughSubject<(x: Int, y: Int), Never> { get }
     var onAnimating: CurrentValueSubject<Bool, Never> { get }
     func set(_ board: [Disk?])
+    func highlight(_ puttableCoordinates: [(x: Int, y: Int)])
     func putAndFlipDisk<Flip: Collection>(of side: Disk, _ put: (x: Int, y: Int)?, _ flip: Flip, completion: ((Bool) -> Void)?) where Flip.Element == (x: Int, y: Int)
 }
 
@@ -61,6 +62,13 @@ class BoardViewModel: BoardViewModelProtocol {
     func set(_ board: [Disk?]) {
         for (viewModel, disk) in zip(cellViewModels, board) {
             viewModel.putDisk(of: disk, animated: false)
+        }
+    }
+    
+    func highlight(_ puttableCoordinates: [(x: Int, y: Int)]) {
+        cellViewModels.forEach { $0.highlight(false) }
+        for (x, y) in puttableCoordinates {
+            cellViewModel(atX: x, y: y).highlight(true)
         }
     }
     

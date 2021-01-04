@@ -10,6 +10,7 @@ import Combine
 protocol GameModelProtocol {
     var boardPublisher: PassthroughSubject<[Disk?], Never> { get }
     var diskMovePublisher: PassthroughSubject<(put: (x: Int, y: Int), flip: [(x: Int, y: Int)]), Never> { get }
+    var puttableCoordinatesPublisher: PassthroughSubject<[(x: Int, y: Int)], Never> { get }
     var turnPublisher: CurrentValueSubject<Disk?, Never> { get }
     var scorePublisher: PassthroughSubject<(dark: Int, light: Int), Never> { get }
     var passPublisher: PassthroughSubject<Void, Never> { get }
@@ -37,6 +38,7 @@ class GameModel: GameModelProtocol {
     // MARK: Send
     var boardPublisher: PassthroughSubject<[Disk?], Never> = .init()
     var diskMovePublisher: PassthroughSubject<(put: (x: Int, y: Int), flip: [(x: Int, y: Int)]), Never> = .init()
+    var puttableCoordinatesPublisher: PassthroughSubject<[(x: Int, y: Int)], Never> = .init()
     var turnPublisher: CurrentValueSubject<Disk?, Never> = .init(.dark)
     var scorePublisher: PassthroughSubject<(dark: Int, light: Int), Never> = .init()
     var passPublisher: PassthroughSubject<Void, Never> = .init()
@@ -55,6 +57,7 @@ class GameModel: GameModelProtocol {
         put(.light, atX: dimention / 2, y: dimention / 2)
         boardPublisher.send(gameBoard)
         scorePublisher.send((2, 2))
+        puttableCoordinatesPublisher.send(validCoordinates(for: .dark))
     }
     
     private func put(_ disk: Disk, atX x: Int, y: Int) {
@@ -154,14 +157,17 @@ class GameModel: GameModelProtocol {
             if validCoordinates(for: turn).isEmpty {
                 // TODO: ゲームセット
                 turnPublisher.send(nil)
+                puttableCoordinatesPublisher.send([])
                 return
             } else {
                 // TODO: pass
                 pass()
+                puttableCoordinatesPublisher.send(validCoordinates(for: turn))
                 return
             }
         }
         // TODO: 次のターン
         turnPublisher.send(turn.flipped)
+        puttableCoordinatesPublisher.send(validCoordinates(for: turn.flipped))
     }
 }

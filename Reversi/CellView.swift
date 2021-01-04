@@ -12,7 +12,8 @@ class CellView: UIView {
     private let button: UIButton = .init()
     private let diskView: DiskView = .init()
     
-    private let cellColor: UIColor = #colorLiteral(red: 0.3529411765, green: 0.4549019608, blue: 0.3098039216, alpha: 1)
+    private let normalColor: UIColor = #colorLiteral(red: 0.3529411765, green: 0.4549019608, blue: 0.3098039216, alpha: 1)
+    private let puttableColor: UIColor = #colorLiteral(red: 0.4431372549, green: 0.568627451, blue: 0.3882352941, alpha: 1)
     
     var viewModel: CellViewModelProtocol!
     private var disposables: Set<AnyCancellable> = []
@@ -58,23 +59,21 @@ class CellView: UIView {
                 }
             }
             .store(in: &disposables)
+        
+        viewModel.canPutState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] canPut in
+                guard let self = self else { return }
+                self.setBackgroundImage(color: canPut ? self.puttableColor : self.normalColor)
+            }
+            .store(in: &disposables)
     }
     
     private func setupViews() {
-        backgroundColor = cellColor
-        // button
         button.translatesAutoresizingMaskIntoConstraints = false
         addSubview(button)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        // background image
-        UIGraphicsBeginImageContext(.init(width: 1, height: 1))
-        let context: CGContext = UIGraphicsGetCurrentContext()!
-        context.setFillColor(cellColor.cgColor)
-        context.fill(.init(x: 0, y: 0, width: 1, height: 1))
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        button.setBackgroundImage(image, for: .normal)
-        // diskView
+        
         diskView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(diskView)
         diskView.isUserInteractionEnabled = false
@@ -95,6 +94,16 @@ class CellView: UIView {
         ])
         diskView.clipsToBounds = true
         diskView.layer.cornerRadius = diskViewWidth / 2
+    }
+    
+    private func setBackgroundImage(color: UIColor) {
+        UIGraphicsBeginImageContext(.init(width: 1, height: 1))
+        let context: CGContext = UIGraphicsGetCurrentContext()!
+        context.setFillColor(color.cgColor)
+        context.fill(.init(x: 0, y: 0, width: 1, height: 1))
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        button.setBackgroundImage(image, for: .normal)
     }
     
     @objc func buttonTapped() {

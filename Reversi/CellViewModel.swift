@@ -9,15 +9,18 @@ import Combine
 
 protocol CellViewModelProtocol {
     var diskState: CurrentValueSubject<(oldState: Disk?, newState: Disk?, animated: Bool), Never> { get }
+    var canPutState: PassthroughSubject<Bool, Never> { get }
     var didTapButton: PassthroughSubject<Void, Never> { get }
     func putDisk(of side: Disk?, animated: Bool)
     func flipDisk()
     func reset()
     func buttonTapped()
+    func highlight(_ shouldHighlight: Bool)
 }
 
 class CellViewModel: CellViewModelProtocol {
     var diskState: CurrentValueSubject<(oldState: Disk?, newState: Disk?, animated: Bool), Never> = .init((nil, nil, false))
+    var canPutState: PassthroughSubject<Bool, Never> = .init()
     var didTapButton: PassthroughSubject<Void, Never> = .init()
     
     func putDisk(of side: Disk?, animated: Bool) {
@@ -36,5 +39,9 @@ class CellViewModel: CellViewModelProtocol {
     
     func buttonTapped() {
         didTapButton.send()
+    }
+    
+    func highlight(_ shouldHighlight: Bool) {
+        canPutState.send(shouldHighlight)
     }
 }
