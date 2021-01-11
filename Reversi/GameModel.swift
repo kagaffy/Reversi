@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 protocol GameModelProtocol {
     var boardPublisher: PassthroughSubject<[Disk?], Never> { get }
@@ -14,6 +15,7 @@ protocol GameModelProtocol {
     var turnPublisher: CurrentValueSubject<Disk?, Never> { get }
     var scorePublisher: PassthroughSubject<(dark: Int, light: Int), Never> { get }
     var passPublisher: PassthroughSubject<Void, Never> { get }
+    func loadGame()
     func reset()
     func calculateScore()
     func tryPutDiskAndFlip(of side: Disk, atx x: Int, y: Int)
@@ -43,9 +45,19 @@ class GameModel: GameModelProtocol {
     var scorePublisher: PassthroughSubject<(dark: Int, light: Int), Never> = .init()
     var passPublisher: PassthroughSubject<Void, Never> = .init()
     
-    init() {
-        // TODO: ゲームデータを復元する処理に変える
-//        reset()
+    func loadGame() {
+        do {
+            let (turn, gameBoard) = try GameSaver.loadGame()
+            self.gameBoard = gameBoard
+            turnPublisher.send(turn)
+            boardPublisher.send(gameBoard)
+            if let turn = turnPublisher.value {
+                puttableCoordinatesPublisher.send(validCoordinates(for: turn))
+            }
+            calculateScore()
+        } catch {
+            reset()
+        }
     }
     
     func reset() {
@@ -58,6 +70,7 @@ class GameModel: GameModelProtocol {
         boardPublisher.send(gameBoard)
         scorePublisher.send((2, 2))
         puttableCoordinatesPublisher.send(validCoordinates(for: .dark))
+        GameSaver.save(turnPublisher.value, gameBoard)
     }
     
     private func put(_ disk: Disk, atX x: Int, y: Int) {
@@ -158,16 +171,19 @@ class GameModel: GameModelProtocol {
                 // TODO: ゲームセット
                 turnPublisher.send(nil)
                 puttableCoordinatesPublisher.send([])
+                GameSaver.save(turnPublisher.value, gameBoard)
                 return
             } else {
                 // TODO: pass
                 pass()
                 puttableCoordinatesPublisher.send(validCoordinates(for: turn))
+                GameSaver.save(turnPublisher.value, gameBoard)
                 return
             }
         }
         // TODO: 次のターン
         turnPublisher.send(turn.flipped)
         puttableCoordinatesPublisher.send(validCoordinates(for: turn.flipped))
+        GameSaver.save(turnPublisher.value, gameBoard)
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2619B0DE25AC5141004A1EFD /* GameSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2619B0DD25AC5141004A1EFD /* GameSaver.swift */; };
 		266ABE5525A354CC006056B7 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266ABE5425A354CC006056B7 /* GameViewModel.swift */; };
 		266ABE5825A354F9006056B7 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266ABE5725A354F8006056B7 /* GameModel.swift */; };
 		266ABE5B25A3553A006056B7 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266ABE5A25A3553A006056B7 /* BoardViewModel.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2619B0DD25AC5141004A1EFD /* GameSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSaver.swift; sourceTree = "<group>"; };
 		266ABE5425A354CC006056B7 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		266ABE5725A354F8006056B7 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		266ABE5A25A3553A006056B7 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 		26DE85F22598CE42005AE824 /* Reversi */ = {
 			isa = PBXGroup;
 			children = (
+				2619B0DD25AC5141004A1EFD /* GameSaver.swift */,
 				26DE86082598CEF9005AE824 /* GameViewController.swift */,
 				266ABE6C25A355F6006056B7 /* ShadowView.swift */,
 				266ABE6925A355E1006056B7 /* ResetButton.swift */,
@@ -176,6 +179,7 @@
 				266ABE6425A355A6006056B7 /* Disk.swift in Sources */,
 				266ABE6A25A355E1006056B7 /* ResetButton.swift in Sources */,
 				266ABE5825A354F9006056B7 /* GameModel.swift in Sources */,
+				2619B0DE25AC5141004A1EFD /* GameSaver.swift in Sources */,
 				266ABE5B25A3553A006056B7 /* BoardViewModel.swift in Sources */,
 				266ABE6D25A355F6006056B7 /* ShadowView.swift in Sources */,
 				266ABE6125A35584006056B7 /* CellView.swift in Sources */,

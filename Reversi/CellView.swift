@@ -70,6 +70,7 @@ class CellView: UIView {
     }
     
     private func setupViews() {
+        backgroundColor = normalColor
         button.translatesAutoresizingMaskIntoConstraints = false
         addSubview(button)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)

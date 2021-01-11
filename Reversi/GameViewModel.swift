@@ -93,7 +93,7 @@ class GameViewModel: GameViewModelProtocol {
             }
             .store(in: &disposables)
         
-        gameModel.reset()
+        gameModel.loadGame()
     }
     
     private func tappedDisk(atX x: Int, y: Int) {
