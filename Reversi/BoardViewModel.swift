@@ -17,7 +17,6 @@ protocol BoardViewModelProtocol {
 }
 
 class BoardViewModel: BoardViewModelProtocol {
-    let dimention: Int = 8
     let cellViewModels: [CellViewModelProtocol]
     
     // MARK: Send
@@ -34,8 +33,8 @@ class BoardViewModel: BoardViewModelProtocol {
         self.cellViewModels = cellViewModels
         
         for (index, viewModel) in cellViewModels.enumerated() {
-            let x: Int = index / dimention
-            let y: Int = index % dimention
+            let x: Int = index / AppConst.dimention
+            let y: Int = index % AppConst.dimention
             viewModel.didTapButton
                 .filter { [weak self] in
                     guard let self = self else { return false }
@@ -55,8 +54,8 @@ class BoardViewModel: BoardViewModelProtocol {
     }
     
     private func cellViewModel(atX x: Int, y: Int) -> CellViewModelProtocol {
-        guard (0..<dimention).contains(x), (0..<dimention).contains(y) else { preconditionFailure() }
-        return cellViewModels[dimention*x + y]
+        guard (0..<AppConst.dimention).contains(x), (0..<AppConst.dimention).contains(y) else { preconditionFailure() }
+        return cellViewModels[AppConst.dimention*x + y]
     }
     
     func set(_ board: [Disk?]) {

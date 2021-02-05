@@ -24,7 +24,6 @@ protocol GameModelProtocol {
 
 /// UI以外のゲームの状態を保持し、ロジックや保存などを行う
 class GameModel: GameModelProtocol {
-    private let dimention: Int = 8
     private var gameBoard: [Disk?] = []
     private let directions: [(x: Int, y: Int)] = [
         (x: -1, y: 0),
@@ -61,12 +60,13 @@ class GameModel: GameModelProtocol {
     }
     
     func reset() {
+        let d = AppConst.dimention
         turnPublisher.value = .dark
-        gameBoard = .init(repeating: nil, count: dimention * dimention)
-        put(.light, atX: dimention / 2 - 1, y: dimention / 2 - 1)
-        put(.dark, atX: dimention / 2 - 1, y: dimention / 2)
-        put(.dark, atX: dimention / 2, y: dimention / 2 - 1)
-        put(.light, atX: dimention / 2, y: dimention / 2)
+        gameBoard = .init(repeating: nil, count: d * d)
+        put(.light, atX: d / 2 - 1, y: d / 2 - 1)
+        put(.dark, atX: d / 2 - 1, y: d / 2)
+        put(.dark, atX: d / 2, y: d / 2 - 1)
+        put(.light, atX: d / 2, y: d / 2)
         boardPublisher.send(gameBoard)
         scorePublisher.send((2, 2))
         puttableCoordinatesPublisher.send(validCoordinates(for: .dark))
@@ -74,24 +74,24 @@ class GameModel: GameModelProtocol {
     }
     
     private func put(_ disk: Disk, atX x: Int, y: Int) {
-        guard (0..<dimention).contains(x), (0..<dimention).contains(y) else { preconditionFailure() }
-        gameBoard[dimention*x + y] = disk
+        guard (0..<AppConst.dimention).contains(x), (0..<AppConst.dimention).contains(y) else { preconditionFailure() }
+        gameBoard[AppConst.dimention*x + y] = disk
     }
     
     private func flipDisk(atX x: Int, y: Int) {
-        guard (0..<dimention).contains(x), (0..<dimention).contains(y) else { preconditionFailure() }
+        guard (0..<AppConst.dimention).contains(x), (0..<AppConst.dimention).contains(y) else { preconditionFailure() }
         guard disk(atX: x, y: y) != nil else { preconditionFailure()}
-        gameBoard[dimention*x + y]?.flip()
+        gameBoard[AppConst.dimention*x + y]?.flip()
     }
     
     private func disk(atX x: Int, y: Int) -> Disk? {
-        guard (0..<dimention).contains(x), (0..<dimention).contains(y) else { return nil }
-        return gameBoard[dimention*x + y]
+        guard (0..<AppConst.dimention).contains(x), (0..<AppConst.dimention).contains(y) else { return nil }
+        return gameBoard[AppConst.dimention*x + y]
     }
     
     /// `gameBoard`の`x`, `y`で与えられた座標に`side`のDiskを置いた場合に裏返せるセルの座標集合を返す
     private func flippableCoordinatesIfPutDisk(of side: Disk, atX x: Int, y: Int) -> [(x: Int, y: Int)] {
-        guard (0..<dimention).contains(x), (0..<dimention).contains(y) else { return [] }
+        guard (0..<AppConst.dimention).contains(x), (0..<AppConst.dimention).contains(y) else { return [] }
         guard disk(atX: x, y: y) == nil else { return [] }
         // 周囲8近傍に相手のDiskがなかったら空
         var validDirections: [(x: Int, y: Int)] = []
@@ -127,8 +127,8 @@ class GameModel: GameModelProtocol {
     
     private func validCoordinates(for side: Disk) -> [(x: Int, y: Int)] {
         var coordinates: [(x: Int, y: Int)] = []
-        for x in 0..<dimention {
-            for y in 0..<dimention {
+        for x in 0..<AppConst.dimention {
+            for y in 0..<AppConst.dimention {
                 let (canPut, _) = canPutDisk(of: side, atX: x, y: y)
                 if canPut { coordinates.append((x: x, y: y)) }
             }

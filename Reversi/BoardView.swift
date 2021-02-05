@@ -8,7 +8,6 @@
 import UIKit
 
 class BoardView: UIView {
-    private let dimention: Int = 8
     private let borderWidth: CGFloat = 2
     private var cellViews: [CellView] = []
     
@@ -46,11 +45,11 @@ class BoardView: UIView {
         vStack.axis = .vertical
         vStack.distribution = .equalSpacing
         addSubview(vStack)
-        for _ in 0..<dimention {
+        for _ in 0..<AppConst.dimention {
             let hStack = UIStackView()
             hStack.translatesAutoresizingMaskIntoConstraints = false
             hStack.distribution = .equalSpacing
-            for _ in 0..<dimention {
+            for _ in 0..<AppConst.dimention {
                 let cellView = CellView()
                 cellView.translatesAutoresizingMaskIntoConstraints = false
                 hStack.addArrangedSubview(cellView)
@@ -68,7 +67,7 @@ class BoardView: UIView {
     }
     
     private func setupLayout() {
-        let cellViewWidth: CGFloat = .init((bounds.width - borderWidth*(CGFloat(dimention+1))) / CGFloat(dimention))
+        let cellViewWidth: CGFloat = .init((bounds.width - borderWidth*(CGFloat(AppConst.dimention+1))) / CGFloat(AppConst.dimention))
         cellViews.forEach {
             NSLayoutConstraint.activate([
                 $0.widthAnchor.constraint(equalToConstant: cellViewWidth),

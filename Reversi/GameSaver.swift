@@ -8,7 +8,6 @@
 import Foundation
 
 enum GameSaver {
-    static let dimention: Int = 8
     static let path: URL = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("GameData")
     
     static func save(_ turn: Disk?, _ gameBoard: [Disk?]) {
