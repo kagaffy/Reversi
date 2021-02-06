@@ -25,6 +25,7 @@
 		26DE86092598CEF9005AE824 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DE86082598CEF9005AE824 /* GameViewController.swift */; };
 		26DE860D2598CF78005AE824 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26DE860C2598CF78005AE824 /* BoardView.swift */; };
 		26EB257425CD6B15004DD5ED /* AppConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EB257325CD6B15004DD5ED /* AppConst.swift */; };
+		26EB257B25CEDA97004DD5ED /* GameDependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EB257A25CEDA97004DD5ED /* GameDependencyContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		26DE86082598CEF9005AE824 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		26DE860C2598CF78005AE824 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		26EB257325CD6B15004DD5ED /* AppConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConst.swift; sourceTree = "<group>"; };
+		26EB257A25CEDA97004DD5ED /* GameDependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDependencyContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 		26DE85F22598CE42005AE824 /* Reversi */ = {
 			isa = PBXGroup;
 			children = (
+				26EB257A25CEDA97004DD5ED /* GameDependencyContainer.swift */,
 				2619B0DD25AC5141004A1EFD /* GameSaver.swift */,
 				26DE86082598CEF9005AE824 /* GameViewController.swift */,
 				26EB257325CD6B15004DD5ED /* AppConst.swift */,
@@ -177,6 +180,7 @@
 				26DE860D2598CF78005AE824 /* BoardView.swift in Sources */,
 				266ABE5E25A35561006056B7 /* CellViewModel.swift in Sources */,
 				26DE86092598CEF9005AE824 /* GameViewController.swift in Sources */,
+				26EB257B25CEDA97004DD5ED /* GameDependencyContainer.swift in Sources */,
 				266ABE5525A354CC006056B7 /* GameViewModel.swift in Sources */,
 				26DE85F62598CE42005AE824 /* SceneDelegate.swift in Sources */,
 				266ABE6425A355A6006056B7 /* Disk.swift in Sources */,
