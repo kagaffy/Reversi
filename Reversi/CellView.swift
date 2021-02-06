@@ -18,6 +18,11 @@ class CellView: UIView {
     var viewModel: CellViewModelProtocol!
     private var disposables: Set<AnyCancellable> = []
     
+    init(viewModel: CellViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         viewModel = makeViewModel()

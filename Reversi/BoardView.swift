@@ -13,6 +13,16 @@ class BoardView: UIView {
     
     var viewModel: BoardViewModelProtocol!
     
+    init(viewModel: BoardViewModelProtocol, cellViewModels: [CellViewModelProtocol]) {
+        func makeCellViews() -> [CellView] {
+            cellViewModels.map { CellView(viewModel: $0) }
+        }
+        
+        self.viewModel = viewModel
+        cellViews = makeCellViews()
+        super.init(frame: .zero)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()

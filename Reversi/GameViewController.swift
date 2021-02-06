@@ -16,6 +16,20 @@ final class GameViewController: UIViewController {
     private var viewModel: GameViewModelProtocol!
     private var disposables: Set<AnyCancellable> = []
     
+    init(viewModel: GameViewModelProtocol, boardViewModel: BoardViewModelProtocol, cellViewModels: [CellViewModelProtocol]) {
+        func makeBoardView() -> BoardView {
+            .init(viewModel: boardViewModel, cellViewModels: cellViewModels)
+        }
+        
+        self.viewModel = viewModel
+        boardView = makeBoardView()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = makeViewModel()
