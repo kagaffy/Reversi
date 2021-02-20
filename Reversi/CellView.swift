@@ -21,6 +21,8 @@ class CellView: UIView {
     init(viewModel: CellViewModelProtocol) {
         self.viewModel = viewModel
         super.init(frame: .zero)
+        setupViews()
+        bind(viewModel)
     }
     
     override init(frame: CGRect) {

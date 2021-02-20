@@ -21,6 +21,8 @@ class BoardView: UIView {
         self.viewModel = viewModel
         cellViews = makeCellViews()
         super.init(frame: .zero)
+        setupViews()
+        setShadow()
     }
     
     override init(frame: CGRect) {
@@ -55,15 +57,14 @@ class BoardView: UIView {
         vStack.axis = .vertical
         vStack.distribution = .equalSpacing
         addSubview(vStack)
-        for _ in 0..<AppConst.dimention {
+        for x in 0..<AppConst.dimention {
             let hStack = UIStackView()
             hStack.translatesAutoresizingMaskIntoConstraints = false
             hStack.distribution = .equalSpacing
-            for _ in 0..<AppConst.dimention {
-                let cellView = CellView()
+            for y in 0..<AppConst.dimention {
+                let cellView = cellViews[AppConst.dimention * x + y]
                 cellView.translatesAutoresizingMaskIntoConstraints = false
                 hStack.addArrangedSubview(cellView)
-                cellViews.append(cellView)
             }
             vStack.addArrangedSubview(hStack)
         }

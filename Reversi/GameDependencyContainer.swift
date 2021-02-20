@@ -26,6 +26,6 @@ class GameDependencyContainer: GameDependencyContainerProtocol {
     }
     
     func makeCellViewModels() -> [CellViewModelProtocol] {
-        .init(repeating: CellViewModel(), count: AppConst.dimention * AppConst.dimention)
+        (0 ..< AppConst.dimention * AppConst.dimention).map { _ in CellViewModel() }
     }
 }
