@@ -27,5 +27,8 @@ class ResetButton: UIButton {
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.6
         layer.shadowRadius = 2
+        setTitle("Reset", for: .normal)
+        setTitleColor(.link , for: .normal)
+        titleLabel?.font = .systemFont(ofSize: 25)
     }
 }
