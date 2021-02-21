@@ -1,0 +1,3 @@
+--stripunusedargs closure-only
+--disable blankLinesAroundMark
+
