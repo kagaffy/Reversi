@@ -25,30 +25,19 @@ class BoardView: UIView {
         setShadow()
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-        setShadow()
-        viewModel = makeViewModel()
-    }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
-        setShadow()
-        viewModel = makeViewModel()
+        return nil
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         setupLayout()
     }
-    
-    private func makeViewModel() -> BoardViewModelProtocol {
-        let cellViewModels = cellViews.map { $0.viewModel! }
-        return BoardViewModel(cellViewModels: cellViewModels)
-    }
-    
+}
+
+// MARK: Views
+extension BoardView {
     private func setupViews() {
         backgroundColor = .black
         

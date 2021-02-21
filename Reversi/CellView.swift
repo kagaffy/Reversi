@@ -25,27 +25,14 @@ class CellView: UIView {
         bind(viewModel)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        viewModel = makeViewModel()
-        setupViews()
-        bind(viewModel)
-    }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        viewModel = makeViewModel()
-        setupViews()
-        bind(viewModel)
+        return nil
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         setupLayout()
-    }
-    
-    private func makeViewModel() -> CellViewModelProtocol {
-        CellViewModel()
     }
     
     private func bind(_ viewModel: CellViewModelProtocol) {
@@ -74,44 +61,6 @@ class CellView: UIView {
                 self.setBackgroundImage(color: canPut ? self.puttableColor : self.normalColor)
             }
             .store(in: &disposables)
-    }
-    
-    private func setupViews() {
-        backgroundColor = normalColor
-        button.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(button)
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
-        diskView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(diskView)
-        diskView.isUserInteractionEnabled = false
-        diskView.alpha = 0
-    }
-    
-    private func setupLayout() {
-        let diskViewWidth: CGFloat = bounds.width * 0.7
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: leadingAnchor),
-            button.topAnchor.constraint(equalTo: topAnchor),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor),
-            button.bottomAnchor.constraint(equalTo: bottomAnchor),
-            diskView.widthAnchor.constraint(equalToConstant: diskViewWidth),
-            diskView.heightAnchor.constraint(equalToConstant: diskViewWidth),
-            diskView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            diskView.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
-        diskView.clipsToBounds = true
-        diskView.layer.cornerRadius = diskViewWidth / 2
-    }
-    
-    private func setBackgroundImage(color: UIColor) {
-        UIGraphicsBeginImageContext(.init(width: 1, height: 1))
-        let context: CGContext = UIGraphicsGetCurrentContext()!
-        context.setFillColor(color.cgColor)
-        context.fill(.init(x: 0, y: 0, width: 1, height: 1))
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        button.setBackgroundImage(image, for: .normal)
     }
     
     @objc func buttonTapped() {
@@ -148,5 +97,46 @@ class CellView: UIView {
             diskView.backgroundColor = side.color
             completion?(true)
         }
+    }
+}
+
+// MARK: Views
+extension CellView {
+    private func setupViews() {
+        backgroundColor = normalColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(button)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        diskView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(diskView)
+        diskView.isUserInteractionEnabled = false
+        diskView.alpha = 0
+    }
+    
+    private func setupLayout() {
+        let diskViewWidth: CGFloat = bounds.width * 0.7
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: leadingAnchor),
+            button.topAnchor.constraint(equalTo: topAnchor),
+            button.trailingAnchor.constraint(equalTo: trailingAnchor),
+            button.bottomAnchor.constraint(equalTo: bottomAnchor),
+            diskView.widthAnchor.constraint(equalToConstant: diskViewWidth),
+            diskView.heightAnchor.constraint(equalToConstant: diskViewWidth),
+            diskView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            diskView.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+        diskView.clipsToBounds = true
+        diskView.layer.cornerRadius = diskViewWidth / 2
+    }
+    
+    private func setBackgroundImage(color: UIColor) {
+        UIGraphicsBeginImageContext(.init(width: 1, height: 1))
+        let context: CGContext = UIGraphicsGetCurrentContext()!
+        context.setFillColor(color.cgColor)
+        context.fill(.init(x: 0, y: 0, width: 1, height: 1))
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        button.setBackgroundImage(image, for: .normal)
     }
 }

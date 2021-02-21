@@ -13,9 +13,9 @@ class ShadowView: UIView {
         setupViews()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
+        return nil
     }
     
     private func setupViews() {
