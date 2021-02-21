@@ -12,12 +12,12 @@ class ShadowView: UIView {
         super.init(frame: frame)
         setupViews()
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         return nil
     }
-    
+
     private func setupViews() {
         backgroundColor = .systemBackground
         clipsToBounds = true

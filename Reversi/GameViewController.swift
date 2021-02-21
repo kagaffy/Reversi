@@ -5,41 +5,41 @@
 //  Created by Yoshiki Tsukada on 2020/12/27.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 final class GameViewController: UIViewController {
     private let boardView: BoardView
     private lazy var scoreLabels: [UILabel] = makeScoreLabels()
     private lazy var turnLabels: [UILabel] = makeTurnLabels()
     private let resetButton: ResetButton = .init()
-    
+
     private let viewModel: GameViewModelProtocol
     private var disposables: Set<AnyCancellable> = []
-    
+
     init(viewModel: GameViewModelProtocol, boardViewModel: BoardViewModelProtocol, cellViewModels: [CellViewModelProtocol]) {
         func makeBoardView() -> BoardView {
             let boardView = BoardView(viewModel: boardViewModel, cellViewModels: cellViewModels)
             boardView.translatesAutoresizingMaskIntoConstraints = false
             return boardView
         }
-        
+
         self.viewModel = viewModel
         boardView = makeBoardView()
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         return nil
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         bind(viewModel)
     }
-    
+
     private func bind(_ viewModel: GameViewModelProtocol) {
         viewModel.turn
             .receive(on: DispatchQueue.main)
@@ -56,7 +56,7 @@ final class GameViewController: UIViewController {
                 self.turnLabels[1].isHidden = turn != .light
             }
             .store(in: &disposables)
-        
+
         viewModel.score
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dark, light in
@@ -65,7 +65,7 @@ final class GameViewController: UIViewController {
                 self.scoreLabels[1].text = String(light)
             }
             .store(in: &disposables)
-        
+
         viewModel.pass
             .receive(on: DispatchQueue.main)
             .sink { [weak self, viewModel] in
@@ -75,7 +75,7 @@ final class GameViewController: UIViewController {
             }
             .store(in: &disposables)
     }
-    
+
     private func showAlert(title: String, message: String, shouldShowCancel: Bool = false, handler: ((UIAlertAction) -> Void)? = nil) {
         let alertController: UIAlertController = .init(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(.init(title: "OK", style: .default, handler: handler))
@@ -84,7 +84,7 @@ final class GameViewController: UIViewController {
         }
         present(alertController, animated: true)
     }
-    
+
     @objc func resetButtonTapped() {
         showAlert(title: "Confirmation.", message: "Do you really want to reset the game?", shouldShowCancel: true) { [weak self] _ in
             guard let self = self else { return }
@@ -129,13 +129,13 @@ extension GameViewController {
             resetButton.widthAnchor.constraint(equalToConstant: 100),
         ])
     }
-    
+
     private func makeScoreLabels() -> [UILabel] {
         let labels: [UILabel] = [.init(), .init()]
         labels.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         return labels
     }
-    
+
     private func makeTurnLabels() -> [UILabel] {
         let labels: [UILabel] = [.init(), .init()]
         labels.forEach {
@@ -144,7 +144,7 @@ extension GameViewController {
         }
         return labels
     }
-    
+
     private func makePlayerSideContainerView(side: Disk, scoreLabel: UILabel, turnLabel: UILabel) -> ShadowView {
         let color: UIColor = {
             switch side {
@@ -152,7 +152,7 @@ extension GameViewController {
             case .light: return .white
             }
         }()
-        
+
         // diskView
         let diskView = DiskView()
         diskView.translatesAutoresizingMaskIntoConstraints = false
@@ -181,7 +181,7 @@ extension GameViewController {
             diskView.widthAnchor.constraint(equalToConstant: 30),
             diskView.heightAnchor.constraint(equalToConstant: 30),
         ])
-        
+
         return containerView
     }
 }

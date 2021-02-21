@@ -5,36 +5,36 @@
 //  Created by Yoshiki Tsukada on 2021/01/04.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 class CellView: UIView {
     private let button: UIButton = .init()
     private let diskView: DiskView = .init()
-    
+
     private let normalColor: UIColor = #colorLiteral(red: 0.3529411765, green: 0.4549019608, blue: 0.3098039216, alpha: 1)
     private let puttableColor: UIColor = #colorLiteral(red: 0.4431372549, green: 0.568627451, blue: 0.3882352941, alpha: 1)
-    
+
     var viewModel: CellViewModelProtocol!
     private var disposables: Set<AnyCancellable> = []
-    
+
     init(viewModel: CellViewModelProtocol) {
         self.viewModel = viewModel
         super.init(frame: .zero)
         setupViews()
         bind(viewModel)
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         return nil
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         setupLayout()
     }
-    
+
     private func bind(_ viewModel: CellViewModelProtocol) {
         viewModel.diskState
             .receive(on: DispatchQueue.main)
@@ -53,7 +53,7 @@ class CellView: UIView {
                 }
             }
             .store(in: &disposables)
-        
+
         viewModel.canPutState
             .receive(on: DispatchQueue.main)
             .sink { [weak self] canPut in
@@ -62,16 +62,16 @@ class CellView: UIView {
             }
             .store(in: &disposables)
     }
-    
+
     @objc func buttonTapped() {
         viewModel.buttonTapped()
     }
-    
+
     /// セルを初期状態に戻す
     func reset() {
         diskView.alpha = 0
     }
-    
+
     func putDisk(of side: Disk, animated: Bool, completion: ((Bool) -> Void)? = nil) {
         diskView.backgroundColor = side.color
         if animated {
@@ -85,7 +85,7 @@ class CellView: UIView {
             completion?(true)
         }
     }
-    
+
     func flip(to side: Disk, animated: Bool, completion: ((Bool) -> Void)? = nil) {
         if animated {
             UIView.transition(with: diskView, duration: 0.3, options: [.transitionFlipFromLeft], animations: {
@@ -107,13 +107,13 @@ extension CellView {
         button.translatesAutoresizingMaskIntoConstraints = false
         addSubview(button)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
+
         diskView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(diskView)
         diskView.isUserInteractionEnabled = false
         diskView.alpha = 0
     }
-    
+
     private func setupLayout() {
         let diskViewWidth: CGFloat = bounds.width * 0.7
         NSLayoutConstraint.activate([
@@ -129,7 +129,7 @@ extension CellView {
         diskView.clipsToBounds = true
         diskView.layer.cornerRadius = diskViewWidth / 2
     }
-    
+
     private func setBackgroundImage(color: UIColor) {
         UIGraphicsBeginImageContext(.init(width: 1, height: 1))
         let context: CGContext = UIGraphicsGetCurrentContext()!

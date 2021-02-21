@@ -12,12 +12,12 @@ class ResetButton: UIButton {
         super.init(frame: frame)
         setupViews()
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         return nil
     }
-    
+
     private func setupViews() {
         backgroundColor = .systemBackground
         clipsToBounds = true
@@ -28,7 +28,7 @@ class ResetButton: UIButton {
         layer.shadowOpacity = 0.6
         layer.shadowRadius = 2
         setTitle("Reset", for: .normal)
-        setTitleColor(.link , for: .normal)
+        setTitleColor(.link, for: .normal)
         titleLabel?.font = .systemFont(ofSize: 25)
     }
 }

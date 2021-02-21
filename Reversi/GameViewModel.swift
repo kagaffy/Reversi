@@ -21,18 +21,18 @@ protocol GameViewModelProtocol {
 class GameViewModel: GameViewModelProtocol {
     var gameModel: GameModelProtocol
     var boardViewModel: BoardViewModelProtocol
-    
+
     // MARK: Send
     var turn: CurrentValueSubject<Disk?, Never> = .init(.dark)
     var score: CurrentValueSubject<(dark: Int, light: Int), Never> = .init((0, 0))
     var pass: PassthroughSubject<Void, Never> = .init()
-    
+
     var disposables: Set<AnyCancellable> = []
-    
+
     init(gameModel: GameModelProtocol, boardViewModel: BoardViewModelProtocol) {
         self.gameModel = gameModel
         self.boardViewModel = boardViewModel
-        
+
         boardViewModel.tappedDiskPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] x, y in
@@ -40,21 +40,21 @@ class GameViewModel: GameViewModelProtocol {
                 self.tappedDisk(atX: x, y: y)
             }
             .store(in: &disposables)
-        
+
         gameModel.boardPublisher
             .receive(on: DispatchQueue.main)
             .sink { board in
                 boardViewModel.set(board)
             }
             .store(in: &disposables)
-        
+
         gameModel.puttableCoordinatesPublisher
             .receive(on: DispatchQueue.main)
             .sink { [boardViewModel] coordinates in
                 boardViewModel.highlight(coordinates)
             }
             .store(in: &disposables)
-        
+
         gameModel.diskMovePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] put, flip in
@@ -68,7 +68,7 @@ class GameViewModel: GameViewModelProtocol {
                 }
             }
             .store(in: &disposables)
-        
+
         gameModel.turnPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] turn in
@@ -76,7 +76,7 @@ class GameViewModel: GameViewModelProtocol {
                 self.turn.send(turn)
             }
             .store(in: &disposables)
-        
+
         gameModel.scorePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dark, light in
@@ -84,7 +84,7 @@ class GameViewModel: GameViewModelProtocol {
                 self.score.send((dark, light))
             }
             .store(in: &disposables)
-        
+
         gameModel.passPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
@@ -92,29 +92,29 @@ class GameViewModel: GameViewModelProtocol {
                 self.pass.send()
             }
             .store(in: &disposables)
-        
+
         gameModel.loadGame()
     }
-    
+
     private func tappedDisk(atX x: Int, y: Int) {
         // TODO: 入力受付中でなかったら何もしない
         guard let player = turn.value else { return }
         gameModel.tryPutDiskAndFlip(of: player, atx: x, y: y)
     }
-    
+
     func getWinner() -> String? {
         let (dark, light) = score.value
         if dark == light { return nil }
         if dark > light { return "Dark" }
         return "Light"
     }
-    
+
     func getTurn() -> String? {
         guard let player = turn.value else { return nil }
         if player == .dark { return "Dark" }
         return "Light"
     }
-    
+
     func reset() {
         gameModel.reset()
     }

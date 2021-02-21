@@ -14,7 +14,7 @@ class DiskView: UIView {
         layer.cornerRadius = bounds.width / 2
         setupViews()
     }
-    
+
     private func setupViews() {
         layer.masksToBounds = false
         layer.shadowOffset = .init(width: 1, height: 1)

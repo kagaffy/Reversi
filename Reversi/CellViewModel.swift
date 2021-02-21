@@ -22,25 +22,25 @@ class CellViewModel: CellViewModelProtocol {
     var diskState: CurrentValueSubject<(oldState: Disk?, newState: Disk?, animated: Bool), Never> = .init((nil, nil, false))
     var canPutState: PassthroughSubject<Bool, Never> = .init()
     var didTapButton: PassthroughSubject<Void, Never> = .init()
-    
+
     func putDisk(of side: Disk?, animated: Bool) {
         let state = (oldState: diskState.value.newState, newState: side, animated: animated)
         diskState.send(state)
     }
-    
+
     func flipDisk() {
         let state = (oldState: diskState.value.newState, newState: diskState.value.newState?.flipped, animated: true)
         diskState.send(state)
     }
-    
+
     func reset() {
         diskState.send((nil, nil, false))
     }
-    
+
     func buttonTapped() {
         didTapButton.send()
     }
-    
+
     func highlight(_ shouldHighlight: Bool) {
         canPutState.send(shouldHighlight)
     }
